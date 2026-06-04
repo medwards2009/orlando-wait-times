@@ -10,6 +10,9 @@ interface FavoritesContextType {
 
 const FavoritesContext = createContext<FavoritesContextType | undefined>(undefined);
 
+// Settings is iOS-only. Android short-circuits to an empty Set on load and
+// silently discards writes. To support Android, swap Settings for a
+// cross-platform API such as expo-secure-store or AsyncStorage.
 function loadFromStorage(): Set<string> {
   if (Platform.OS !== 'ios') return new Set();
   try {
