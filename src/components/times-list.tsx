@@ -104,6 +104,7 @@ export function TimesList({
       renderItem={renderItem}
       keyExtractor={(item) => item.key}
       contentContainerStyle={styles.listContent}
+      contentInsetAdjustmentBehavior="automatic"
       refreshControl={
         <RefreshControl
           refreshing={refreshing}
