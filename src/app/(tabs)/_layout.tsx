@@ -41,7 +41,7 @@ export default function TabsLayout() {
     return (
       <NativeTabs {...tabBarProps}>
         <NativeTabs.Trigger name="magic-kingdom">
-          <NativeTabs.Trigger.Label>Magic Kgdm</NativeTabs.Trigger.Label>
+          <NativeTabs.Trigger.Label>Magic</NativeTabs.Trigger.Label>
           <NativeTabs.Trigger.Icon
             src={<NativeTabs.Trigger.VectorIcon family={MaterialCommunityIcons} name={'castle' as any} />}
           />
@@ -55,14 +55,14 @@ export default function TabsLayout() {
         </NativeTabs.Trigger>
 
         <NativeTabs.Trigger name="hollywood-studios">
-          <NativeTabs.Trigger.Label>Hollywood</NativeTabs.Trigger.Label>
+          <NativeTabs.Trigger.Label>Studios</NativeTabs.Trigger.Label>
           <NativeTabs.Trigger.Icon
             src={<NativeTabs.Trigger.VectorIcon family={MaterialCommunityIcons} name={'movie' as any} />}
           />
         </NativeTabs.Trigger>
 
         <NativeTabs.Trigger name="animal-kingdom">
-          <NativeTabs.Trigger.Label>Animal Kgdm</NativeTabs.Trigger.Label>
+          <NativeTabs.Trigger.Label>Animal</NativeTabs.Trigger.Label>
           <NativeTabs.Trigger.Icon
             src={<NativeTabs.Trigger.VectorIcon family={MaterialCommunityIcons} name={'paw' as any} />}
           />
