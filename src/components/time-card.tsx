@@ -44,14 +44,12 @@ export function TimeCard({
         },
         isPressed && styles.cardPressed,
       ]}
-      onPress={() => setIsPressed(!isPressed)}
+      onPressIn={() => setIsPressed(true)}
+      onPressOut={() => setIsPressed(false)}
     >
       <View style={styles.content}>
         <View style={styles.textContainer}>
-          <Text
-            style={[styles.rideName, { color: theme.colors.onSurface }]}
-            numberOfLines={2}
-          >
+          <Text style={[styles.rideName, { color: theme.colors.onSurface }]} numberOfLines={2}>
             {name}
           </Text>
         </View>
@@ -60,7 +58,12 @@ export function TimeCard({
           <Text
             style={[
               isOperating && waitTime !== null ? styles.waitTime : styles.closedText,
-              { color: isOperating && waitTime !== null ? theme.colors.onSurface : theme.colors.onSurfaceVariant },
+              {
+                color:
+                  isOperating && waitTime !== null
+                    ? theme.colors.onSurface
+                    : theme.colors.onSurfaceVariant,
+              },
             ]}
           >
             {isOperating && waitTime !== null ? `${waitTime}` : 'Closed'}
