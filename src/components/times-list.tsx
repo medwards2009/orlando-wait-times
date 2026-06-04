@@ -1,12 +1,12 @@
 import { LiveDataItemDto } from '@/types/api';
-import React, { useCallback, useMemo, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import { FlatList, ListRenderItem, RefreshControl, StyleSheet, View } from 'react-native';
 import { ActivityIndicator, Text, useTheme } from 'react-native-paper';
 import TimeCard from './time-card';
 
 interface TimesListProps {
   attractions: LiveDataItemDto[];
-  isLoading?: boolean;
+  isFetching?: boolean;
   onRefresh?: () => void;
   onFavoriteToggle?: (id: string) => void;
   favoritedIds?: Set<string>;
@@ -18,7 +18,7 @@ type ListItem =
 
 export function TimesList({
   attractions,
-  isLoading = false,
+  isFetching = false,
   onRefresh,
   onFavoriteToggle,
   favoritedIds = new Set(),
@@ -31,9 +31,9 @@ export function TimesList({
     onRefresh?.();
   }, [onRefresh]);
 
-  React.useEffect(() => {
-    if (!isLoading) setRefreshing(false);
-  }, [isLoading]);
+  useEffect(() => {
+    if (!isFetching) setRefreshing(false);
+  }, [isFetching]);
 
   const listItems = useMemo<ListItem[]>(() => {
     const pinned = attractions.filter((a) => favoritedIds.has(a.id));
@@ -46,7 +46,6 @@ export function TimesList({
     }
 
     if (rest.length > 0) {
-      const sectionLabel = `${attractions[0] ? '' : ''}All Rides`;
       items.push({
         type: 'section',
         label: `${rest.length + pinned.length} TOTAL`,
@@ -62,9 +61,7 @@ export function TimesList({
     if (item.type === 'section') {
       return (
         <View style={[styles.sectionHeader, { borderBottomColor: theme.colors.surfaceVariant }]}>
-          <Text style={[styles.sectionText, { color: theme.colors.onSurface }]}>
-            {item.label}
-          </Text>
+          <Text style={[styles.sectionText, { color: theme.colors.onSurface }]}>{item.label}</Text>
         </View>
       );
     }
@@ -80,7 +77,7 @@ export function TimesList({
     );
   };
 
-  if (isLoading && attractions.length === 0) {
+  if (isFetching && attractions.length === 0) {
     return (
       <View style={[styles.loadingContainer, { backgroundColor: theme.colors.background }]}>
         <ActivityIndicator size="large" />
@@ -91,7 +88,7 @@ export function TimesList({
     );
   }
 
-  if (!isLoading && attractions.length === 0) {
+  if (!isFetching && attractions.length === 0) {
     return (
       <View style={styles.emptyContainer}>
         <Text style={[styles.emptyText, { color: theme.colors.onSurfaceVariant }]}>

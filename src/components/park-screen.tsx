@@ -16,7 +16,7 @@ export function ParkScreen({ destinationSlug, parkName }: ParkScreenProps) {
   const theme = useTheme();
   const { favoritedIds, toggleFavorite } = useFavorites();
 
-  const { data, isLoading, error, refetch } = useGetParkTimes({
+  const { data, isFetching, error, refetch } = useGetParkTimes({
     destinationSlug,
     parkName,
     refetchInterval: 30000,
@@ -29,7 +29,10 @@ export function ParkScreen({ destinationSlug, parkName }: ParkScreenProps) {
 
   if (error) {
     return (
-      <SafeAreaView edges={['top']} style={[styles.container, { backgroundColor: theme.colors.background }]}>
+      <SafeAreaView
+        edges={['top']}
+        style={[styles.container, { backgroundColor: theme.colors.background }]}
+      >
         <Text style={[styles.errorText, { color: theme.colors.error }]}>
           Error loading wait times: {error.message}
         </Text>
@@ -38,10 +41,13 @@ export function ParkScreen({ destinationSlug, parkName }: ParkScreenProps) {
   }
 
   return (
-    <SafeAreaView edges={['top']} style={[styles.container, { backgroundColor: theme.colors.background }]}>
+    <SafeAreaView
+      edges={['top']}
+      style={[styles.container, { backgroundColor: theme.colors.background }]}
+    >
       <TimesList
         attractions={attractions}
-        isLoading={isLoading}
+        isFetching={isFetching}
         onRefresh={refetch}
         favoritedIds={favoritedIds}
         onFavoriteToggle={toggleFavorite}
