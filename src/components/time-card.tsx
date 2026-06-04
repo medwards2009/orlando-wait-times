@@ -25,12 +25,24 @@ export function TimeCard({
 
   const waitTime = queue?.STANDBY?.waitTime ?? null;
   const isOperating = status === 'OPERATING';
+  const hasStandbyTime = isOperating && waitTime !== null;
+
+  let operatingLabel: string | null = null;
+  if (isOperating && waitTime === null) {
+    if (queue?.BOARDING_GROUP) operatingLabel = 'Virtual';
+    else if (queue?.RETURN_TIME || queue?.PAID_RETURN_TIME) operatingLabel = 'LL';
+    else operatingLabel = 'Open';
+  }
 
   let borderColor = theme.colors.onSurfaceVariant;
-  if (isOperating && waitTime !== null) {
-    if (waitTime < 20) borderColor = '#22c55e';
-    else if (waitTime < 45) borderColor = '#f59e0b';
-    else borderColor = '#ef4444';
+  if (isOperating) {
+    if (hasStandbyTime) {
+      if (waitTime! < 20) borderColor = '#22c55e';
+      else if (waitTime! < 45) borderColor = '#f59e0b';
+      else borderColor = '#ef4444';
+    } else {
+      borderColor = '#22c55e';
+    }
   }
 
   return (
@@ -57,19 +69,14 @@ export function TimeCard({
         <View style={styles.waitTimeContainer}>
           <Text
             style={[
-              isOperating && waitTime !== null ? styles.waitTime : styles.closedText,
-              {
-                color:
-                  isOperating && waitTime !== null
-                    ? theme.colors.onSurface
-                    : theme.colors.onSurfaceVariant,
-              },
+              hasStandbyTime ? styles.waitTime : styles.closedText,
+              { color: isOperating ? theme.colors.onSurface : theme.colors.onSurfaceVariant },
             ]}
           >
-            {isOperating && waitTime !== null ? `${waitTime}` : 'Closed'}
+            {hasStandbyTime ? `${waitTime}` : (operatingLabel ?? 'Closed')}
           </Text>
           <Text style={[styles.minutesLabel, { color: theme.colors.onSurfaceVariant }]}>
-            {isOperating && waitTime !== null ? 'MIN' : ''}
+            {hasStandbyTime ? 'MIN' : ''}
           </Text>
         </View>
 
