@@ -71,6 +71,7 @@ export function TimesList({
         name={item.data.name}
         queue={item.data.queue}
         status={item.data.status}
+        forecast={item.data.forecast}
         isFavorited={favoritedIds.has(item.data.id)}
         onFavoriteToggle={onFavoriteToggle}
       />

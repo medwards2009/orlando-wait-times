@@ -1,13 +1,15 @@
-import { QueueDto } from '@/types/api';
+import { ForecastItemDto, QueueDto } from '@/types/api';
 import { useState } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { Card, IconButton, Text, useTheme } from 'react-native-paper';
+import { ForecastSheet } from './forecast-sheet';
 
 interface TimeCardProps {
   id: string;
   name: string;
   queue?: QueueDto;
   status?: string;
+  forecast?: ForecastItemDto[];
   isFavorited?: boolean;
   onFavoriteToggle?: (id: string) => void;
 }
@@ -17,11 +19,15 @@ export function TimeCard({
   name,
   queue,
   status,
+  forecast,
   isFavorited = false,
   onFavoriteToggle,
 }: TimeCardProps) {
   const theme = useTheme();
   const [isPressed, setIsPressed] = useState(false);
+  const [showForecast, setShowForecast] = useState(false);
+
+  const hasForecast = !!forecast?.length;
 
   const waitTime = queue?.STANDBY?.waitTime ?? null;
   const isOperating = status === 'OPERATING';
@@ -46,50 +52,62 @@ export function TimeCard({
   }
 
   return (
-    <Card
-      style={[
-        styles.card,
-        {
-          backgroundColor: theme.dark ? theme.colors.surface : theme.colors.background,
-          borderLeftColor: borderColor,
-          borderLeftWidth: 4,
-        },
-        isPressed && styles.cardPressed,
-      ]}
-      onPressIn={() => setIsPressed(true)}
-      onPressOut={() => setIsPressed(false)}
-    >
-      <View style={styles.content}>
-        <View style={styles.textContainer}>
-          <Text style={[styles.rideName, { color: theme.colors.onSurface }]} numberOfLines={2}>
-            {name}
-          </Text>
-        </View>
+    <>
+      <Card
+        style={[
+          styles.card,
+          {
+            backgroundColor: theme.dark ? theme.colors.surface : theme.colors.background,
+            borderLeftColor: borderColor,
+            borderLeftWidth: 4,
+          },
+          isPressed && styles.cardPressed,
+        ]}
+        onPressIn={() => setIsPressed(true)}
+        onPressOut={() => setIsPressed(false)}
+        onPress={hasForecast ? () => setShowForecast(true) : undefined}
+      >
+        <View style={styles.content}>
+          <View style={styles.textContainer}>
+            <Text style={[styles.rideName, { color: theme.colors.onSurface }]} numberOfLines={2}>
+              {name}
+            </Text>
+          </View>
 
-        <View style={styles.waitTimeContainer}>
-          <Text
-            style={[
-              hasStandbyTime ? styles.waitTime : styles.closedText,
-              { color: isOperating ? theme.colors.onSurface : theme.colors.onSurfaceVariant },
-            ]}
-          >
-            {hasStandbyTime ? `${waitTime}` : (operatingLabel ?? 'Closed')}
-          </Text>
-          <Text style={[styles.minutesLabel, { color: theme.colors.onSurfaceVariant }]}>
-            {hasStandbyTime ? 'MIN' : ''}
-          </Text>
-        </View>
+          <View style={styles.waitTimeContainer}>
+            <Text
+              style={[
+                hasStandbyTime ? styles.waitTime : styles.closedText,
+                { color: isOperating ? theme.colors.onSurface : theme.colors.onSurfaceVariant },
+              ]}
+            >
+              {hasStandbyTime ? `${waitTime}` : (operatingLabel ?? 'Closed')}
+            </Text>
+            <Text style={[styles.minutesLabel, { color: theme.colors.onSurfaceVariant }]}>
+              {hasStandbyTime ? 'MIN' : ''}
+            </Text>
+          </View>
 
-        {onFavoriteToggle && (
-          <IconButton
-            icon={isFavorited ? 'star' : 'star-outline'}
-            size={24}
-            onPress={() => onFavoriteToggle(id)}
-            style={styles.favoriteButton}
-          />
-        )}
-      </View>
-    </Card>
+          {onFavoriteToggle && (
+            <IconButton
+              icon={isFavorited ? 'star' : 'star-outline'}
+              size={24}
+              onPress={() => onFavoriteToggle(id)}
+              style={styles.favoriteButton}
+            />
+          )}
+        </View>
+      </Card>
+
+      {hasForecast && (
+        <ForecastSheet
+          visible={showForecast}
+          attractionName={name}
+          forecast={forecast!}
+          onDismiss={() => setShowForecast(false)}
+        />
+      )}
+    </>
   );
 }
 
