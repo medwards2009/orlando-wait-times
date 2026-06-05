@@ -3,9 +3,8 @@ import { useFavorites } from '@/contexts/FavoritesContext';
 import { useGetParkTimes } from '@/hooks/useGetParkTimes';
 import { LiveDataItemDto } from '@/types/api';
 import { useMemo } from 'react';
-import { StyleSheet } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 import { Text, useTheme } from 'react-native-paper';
-import { SafeAreaView } from 'react-native-safe-area-context';
 
 interface ParkScreenProps {
   destinationSlug: string;
@@ -29,22 +28,16 @@ export function ParkScreen({ destinationSlug, parkName }: ParkScreenProps) {
 
   if (error) {
     return (
-      <SafeAreaView
-        edges={['top']}
-        style={[styles.container, { backgroundColor: theme.colors.background }]}
-      >
+      <View style={[styles.container, { backgroundColor: theme.colors.background }]}>
         <Text style={[styles.errorText, { color: theme.colors.error }]}>
           Error loading wait times: {error.message}
         </Text>
-      </SafeAreaView>
+      </View>
     );
   }
 
   return (
-    <SafeAreaView
-      edges={['top']}
-      style={[styles.container, { backgroundColor: theme.colors.background }]}
-    >
+    <View style={[styles.container, { backgroundColor: theme.colors.background }]}>
       <TimesList
         attractions={attractions}
         parkName={parkName}
@@ -53,7 +46,7 @@ export function ParkScreen({ destinationSlug, parkName }: ParkScreenProps) {
         favoritedIds={favoritedIds}
         onFavoriteToggle={toggleFavorite}
       />
-    </SafeAreaView>
+    </View>
   );
 }
 

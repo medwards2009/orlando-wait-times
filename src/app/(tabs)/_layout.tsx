@@ -52,28 +52,45 @@ export default function TabsLayout() {
         <NativeTabs.Trigger name="magic-kingdom">
           <NativeTabs.Trigger.Label>Magic</NativeTabs.Trigger.Label>
           <NativeTabs.Trigger.Icon
-            src={<NativeTabs.Trigger.VectorIcon family={MaterialCommunityIcons} name={'castle' as any} />}
+            src={
+              <NativeTabs.Trigger.VectorIcon
+                family={MaterialCommunityIcons}
+                name={'castle' as any}
+              />
+            }
           />
         </NativeTabs.Trigger>
 
         <NativeTabs.Trigger name="epcot">
           <NativeTabs.Trigger.Label>Epcot</NativeTabs.Trigger.Label>
           <NativeTabs.Trigger.Icon
-            src={<NativeTabs.Trigger.VectorIcon family={MaterialCommunityIcons} name={'sphere' as any} />}
+            src={
+              <NativeTabs.Trigger.VectorIcon
+                family={MaterialCommunityIcons}
+                name={'sphere' as any}
+              />
+            }
           />
         </NativeTabs.Trigger>
 
         <NativeTabs.Trigger name="hollywood-studios">
           <NativeTabs.Trigger.Label>Studios</NativeTabs.Trigger.Label>
           <NativeTabs.Trigger.Icon
-            src={<NativeTabs.Trigger.VectorIcon family={MaterialCommunityIcons} name={'movie' as any} />}
+            src={
+              <NativeTabs.Trigger.VectorIcon
+                family={MaterialCommunityIcons}
+                name={'movie' as any}
+              />
+            }
           />
         </NativeTabs.Trigger>
 
         <NativeTabs.Trigger name="animal-kingdom">
           <NativeTabs.Trigger.Label>Animal</NativeTabs.Trigger.Label>
           <NativeTabs.Trigger.Icon
-            src={<NativeTabs.Trigger.VectorIcon family={MaterialCommunityIcons} name={'paw' as any} />}
+            src={
+              <NativeTabs.Trigger.VectorIcon family={MaterialCommunityIcons} name={'paw' as any} />
+            }
           />
         </NativeTabs.Trigger>
       </NativeTabs>
@@ -86,14 +103,21 @@ export default function TabsLayout() {
         <NativeTabs.Trigger name="seaworld-orlando">
           <NativeTabs.Trigger.Label>SeaWorld</NativeTabs.Trigger.Label>
           <NativeTabs.Trigger.Icon
-            src={<NativeTabs.Trigger.VectorIcon family={MaterialCommunityIcons} name={'waves' as any} />}
+            src={
+              <NativeTabs.Trigger.VectorIcon
+                family={MaterialCommunityIcons}
+                name={'waves' as any}
+              />
+            }
           />
         </NativeTabs.Trigger>
 
         <NativeTabs.Trigger name="aquatica">
           <NativeTabs.Trigger.Label>Aquatica</NativeTabs.Trigger.Label>
           <NativeTabs.Trigger.Icon
-            src={<NativeTabs.Trigger.VectorIcon family={MaterialCommunityIcons} name={'pool' as any} />}
+            src={
+              <NativeTabs.Trigger.VectorIcon family={MaterialCommunityIcons} name={'pool' as any} />
+            }
           />
         </NativeTabs.Trigger>
       </NativeTabs>
@@ -105,28 +129,39 @@ export default function TabsLayout() {
       <NativeTabs.Trigger name="islands-of-adventure">
         <NativeTabs.Trigger.Label>Islands</NativeTabs.Trigger.Label>
         <NativeTabs.Trigger.Icon
-          src={<NativeTabs.Trigger.VectorIcon family={MaterialCommunityIcons} name={'island' as any} />}
+          src={
+            <NativeTabs.Trigger.VectorIcon family={MaterialCommunityIcons} name={'island' as any} />
+          }
         />
       </NativeTabs.Trigger>
 
       <NativeTabs.Trigger name="universal-studios-florida">
         <NativeTabs.Trigger.Label>Universal</NativeTabs.Trigger.Label>
         <NativeTabs.Trigger.Icon
-          src={<NativeTabs.Trigger.VectorIcon family={MaterialCommunityIcons} name={'movie-star' as any} />}
+          src={
+            <NativeTabs.Trigger.VectorIcon
+              family={MaterialCommunityIcons}
+              name={'movie-star' as any}
+            />
+          }
         />
       </NativeTabs.Trigger>
 
       <NativeTabs.Trigger name="epic-universe">
         <NativeTabs.Trigger.Label>Epic Univ.</NativeTabs.Trigger.Label>
         <NativeTabs.Trigger.Icon
-          src={<NativeTabs.Trigger.VectorIcon family={MaterialCommunityIcons} name={'earth' as any} />}
+          src={
+            <NativeTabs.Trigger.VectorIcon family={MaterialCommunityIcons} name={'earth' as any} />
+          }
         />
       </NativeTabs.Trigger>
 
       <NativeTabs.Trigger name="volcano-bay">
         <NativeTabs.Trigger.Label>Volcano Bay</NativeTabs.Trigger.Label>
         <NativeTabs.Trigger.Icon
-          src={<NativeTabs.Trigger.VectorIcon family={MaterialCommunityIcons} name={'water' as any} />}
+          src={
+            <NativeTabs.Trigger.VectorIcon family={MaterialCommunityIcons} name={'water' as any} />
+          }
         />
       </NativeTabs.Trigger>
     </NativeTabs>

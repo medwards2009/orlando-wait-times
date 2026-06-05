@@ -1,4 +1,8 @@
-import { Inter_500Medium, Inter_600SemiBold, useFonts as useInterFonts } from '@expo-google-fonts/inter';
+import {
+  Inter_500Medium,
+  Inter_600SemiBold,
+  useFonts as useInterFonts,
+} from '@expo-google-fonts/inter';
 import { Manrope_700Bold, useFonts as useManropeFonts } from '@expo-google-fonts/manrope';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { SplashScreen, Stack } from 'expo-router';
@@ -8,8 +12,8 @@ import { PaperProvider } from 'react-native-paper';
 
 import HeaderWithMenu from '@/components/header-with-menu';
 import { PaperDarkTheme, PaperLightTheme } from '@/constants/paperTheme';
-import ParkProvider, { useParkSelection } from '@/contexts/ParkContext';
 import { FavoritesProvider } from '@/contexts/FavoritesContext';
+import ParkProvider, { useParkSelection } from '@/contexts/ParkContext';
 
 SplashScreen.preventAutoHideAsync();
 
