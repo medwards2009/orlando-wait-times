@@ -1,3 +1,4 @@
+import ParkScreen from '@/components/park-screen';
 import { Colors } from '@/constants/theme';
 import { useParkSelection } from '@/contexts/ParkContext';
 import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons';
@@ -20,12 +21,20 @@ export default function TabsLayout() {
     }
     if (selectedPark === 'disney') {
       router.replace('/(tabs)/magic-kingdom');
-    } else {
+    } else if (selectedPark === 'universal') {
       router.replace('/(tabs)/islands-of-adventure');
+    } else if (selectedPark === 'seaworld') {
+      router.replace('/(tabs)/seaworld-orlando');
     }
+    // legoland: rendered directly below, no tab route to navigate to
   }, [selectedPark]);
 
   if (isLoading) return null;
+
+  // LEGOLAND Florida is a single park — render it directly with no bottom subnav.
+  if (selectedPark === 'legoland') {
+    return <ParkScreen destinationSlug="legolandorlandoresort" parkName="LEGOLAND Florida" />;
+  }
 
   // Unselected icons use the text color; selected icon defaults to system blue.
   // Labels stay the text color in both states (no blue highlight on selection).
@@ -65,6 +74,26 @@ export default function TabsLayout() {
           <NativeTabs.Trigger.Label>Animal</NativeTabs.Trigger.Label>
           <NativeTabs.Trigger.Icon
             src={<NativeTabs.Trigger.VectorIcon family={MaterialCommunityIcons} name={'paw' as any} />}
+          />
+        </NativeTabs.Trigger>
+      </NativeTabs>
+    );
+  }
+
+  if (selectedPark === 'seaworld') {
+    return (
+      <NativeTabs {...tabBarProps}>
+        <NativeTabs.Trigger name="seaworld-orlando">
+          <NativeTabs.Trigger.Label>SeaWorld</NativeTabs.Trigger.Label>
+          <NativeTabs.Trigger.Icon
+            src={<NativeTabs.Trigger.VectorIcon family={MaterialCommunityIcons} name={'waves' as any} />}
+          />
+        </NativeTabs.Trigger>
+
+        <NativeTabs.Trigger name="aquatica">
+          <NativeTabs.Trigger.Label>Aquatica</NativeTabs.Trigger.Label>
+          <NativeTabs.Trigger.Icon
+            src={<NativeTabs.Trigger.VectorIcon family={MaterialCommunityIcons} name={'pool' as any} />}
           />
         </NativeTabs.Trigger>
       </NativeTabs>

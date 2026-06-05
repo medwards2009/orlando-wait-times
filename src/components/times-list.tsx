@@ -44,7 +44,12 @@ export function TimesList({
     const items: ListItem[] = [];
 
     if (pinned.length > 0) {
-      items.push({ type: 'section', label: 'Pinned Favorites', count: pinned.length, key: 'section-pinned' });
+      items.push({
+        type: 'section',
+        label: 'Pinned Favorites',
+        count: pinned.length,
+        key: 'section-pinned',
+      });
       pinned.forEach((a) => items.push({ type: 'attraction', data: a, key: `pinned-${a.id}` }));
     }
 
