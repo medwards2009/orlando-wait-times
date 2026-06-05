@@ -26,9 +26,9 @@ export const PaperDarkTheme = {
   ...MD3DarkTheme,
   colors: {
     ...MD3DarkTheme.colors,
-    primary: '#3b82f6', // Blue (lighter for dark mode)
-    secondary: '#fbbf24', // Amber (lighter for dark mode)
-    tertiary: '#34d399', // Emerald (lighter for dark mode)
+    primary: '#98cbff',
+    secondary: '#a8c9f3',
+    tertiary: '#68d3ff',
     background: Colors.dark.background,
     error: '#f87171',
     errorContainer: '#7f1d1d',

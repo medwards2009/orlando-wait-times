@@ -1,3 +1,4 @@
+import { Typography } from '@/constants/theme';
 import { ForecastItemDto, QueueDto } from '@/types/api';
 import { useState } from 'react';
 import { StyleSheet, View } from 'react-native';
@@ -57,9 +58,9 @@ export function TimeCard({
         style={[
           styles.card,
           {
-            backgroundColor: theme.dark ? theme.colors.surface : theme.colors.background,
+            backgroundColor: theme.colors.surface,
+            borderColor: 'rgba(255,255,255,0.1)',
             borderLeftColor: borderColor,
-            borderLeftWidth: 4,
           },
           isPressed && styles.cardPressed,
         ]}
@@ -113,10 +114,12 @@ export function TimeCard({
 
 const styles = StyleSheet.create({
   card: {
-    marginBottom: 12,
+    marginBottom: 16,
     paddingVertical: 12,
     paddingHorizontal: 16,
-    borderRadius: 8,
+    borderRadius: 24,
+    borderWidth: 1,
+    borderLeftWidth: 4,
   },
   cardPressed: {
     opacity: 0.7,
@@ -131,24 +134,20 @@ const styles = StyleSheet.create({
     marginRight: 12,
   },
   rideName: {
-    fontSize: 16,
-    fontWeight: '600',
+    ...Typography.bodyMd,
   },
   waitTimeContainer: {
     alignItems: 'center',
     minWidth: 50,
   },
   waitTime: {
-    fontSize: 28,
-    fontWeight: 'bold',
+    ...Typography.headlineLg,
   },
   closedText: {
-    fontSize: 14,
-    fontWeight: '500',
+    ...Typography.labelMd,
   },
   minutesLabel: {
-    fontSize: 12,
-    fontWeight: '500',
+    ...Typography.labelSm,
   },
   favoriteButton: {
     margin: 0,
