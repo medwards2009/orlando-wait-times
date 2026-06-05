@@ -50,6 +50,12 @@ export interface DestinationDto {
   parks: ParkDto[];
 }
 
+export interface ForecastItemDto {
+  time: string;
+  waitTime: number;
+  percentage: number;
+}
+
 export interface LiveDataItemDto {
   id: string;
   name: string;
@@ -58,7 +64,7 @@ export interface LiveDataItemDto {
   externalId: string;
   queue?: QueueDto;
   status: string;
-  forecast?: string[];
+  forecast?: ForecastItemDto[];
   operatingHours?: string[];
   lastUpdated: string;
 }
