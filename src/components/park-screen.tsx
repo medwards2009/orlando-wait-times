@@ -47,6 +47,7 @@ export function ParkScreen({ destinationSlug, parkName }: ParkScreenProps) {
     >
       <TimesList
         attractions={attractions}
+        parkName={parkName}
         isFetching={isFetching}
         onRefresh={refetch}
         favoritedIds={favoritedIds}

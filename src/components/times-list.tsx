@@ -1,3 +1,4 @@
+import { Typography } from '@/constants/theme';
 import { LiveDataItemDto } from '@/types/api';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { FlatList, ListRenderItem, RefreshControl, StyleSheet, View } from 'react-native';
@@ -6,6 +7,7 @@ import TimeCard from './time-card';
 
 interface TimesListProps {
   attractions: LiveDataItemDto[];
+  parkName?: string;
   isFetching?: boolean;
   onRefresh?: () => void;
   onFavoriteToggle?: (id: string) => void;
@@ -13,11 +15,12 @@ interface TimesListProps {
 }
 
 type ListItem =
-  | { type: 'section'; label: string; key: string }
+  | { type: 'section'; label: string; count?: number; key: string }
   | { type: 'attraction'; data: LiveDataItemDto; key: string };
 
 export function TimesList({
   attractions,
+  parkName,
   isFetching = false,
   onRefresh,
   onFavoriteToggle,
@@ -41,14 +44,15 @@ export function TimesList({
     const items: ListItem[] = [];
 
     if (pinned.length > 0) {
-      items.push({ type: 'section', label: '★  Pinned Favorites', key: 'section-pinned' });
+      items.push({ type: 'section', label: 'Pinned Favorites', count: pinned.length, key: 'section-pinned' });
       pinned.forEach((a) => items.push({ type: 'attraction', data: a, key: `pinned-${a.id}` }));
     }
 
     if (rest.length > 0) {
       items.push({
         type: 'section',
-        label: `${rest.length + pinned.length} TOTAL`,
+        label: parkName ?? 'All Rides',
+        count: rest.length + pinned.length,
         key: 'section-all',
       });
       rest.forEach((a) => items.push({ type: 'attraction', data: a, key: `ride-${a.id}` }));
@@ -60,8 +64,15 @@ export function TimesList({
   const renderItem: ListRenderItem<ListItem> = ({ item }) => {
     if (item.type === 'section') {
       return (
-        <View style={[styles.sectionHeader, { borderBottomColor: theme.colors.surfaceVariant }]}>
-          <Text style={[styles.sectionText, { color: theme.colors.onSurface }]}>{item.label}</Text>
+        <View style={styles.sectionHeader}>
+          <Text style={[styles.sectionLabel, { color: theme.colors.onSurfaceVariant }]}>
+            {item.label.toUpperCase()}
+          </Text>
+          {item.count != null && (
+            <Text style={[styles.sectionCount, { color: theme.colors.onSurfaceVariant }]}>
+              {item.count} ATTRACTIONS
+            </Text>
+          )}
         </View>
       );
     }
@@ -123,14 +134,18 @@ const styles = StyleSheet.create({
     paddingVertical: 12,
   },
   sectionHeader: {
-    paddingVertical: 10,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    paddingVertical: 8,
     marginBottom: 8,
     marginTop: 4,
-    borderBottomWidth: 1,
   },
-  sectionText: {
-    fontSize: 18,
-    fontWeight: 'bold',
+  sectionLabel: {
+    ...Typography.labelSm,
+  },
+  sectionCount: {
+    ...Typography.labelSm,
   },
   loadingContainer: {
     flex: 1,

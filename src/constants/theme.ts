@@ -16,12 +16,19 @@ export const Colors = {
     textSecondary: '#60646C',
   },
   dark: {
-    text: '#ffffff',
-    background: '#000000',
-    backgroundElement: '#212225',
-    backgroundSelected: '#2E3135',
-    textSecondary: '#B0B4BA',
+    text: '#dde2f1',
+    background: '#0e131e',
+    backgroundElement: '#1a202a',
+    backgroundSelected: '#2f3540',
+    textSecondary: '#bec7d4',
   },
+} as const;
+
+export const Typography = {
+  headlineLg: { fontFamily: 'Manrope_700Bold', fontSize: 28, lineHeight: 36 },
+  labelSm:    { fontFamily: 'Inter_600SemiBold', fontSize: 12, letterSpacing: 0.6 },
+  labelMd:    { fontFamily: 'Inter_500Medium', fontSize: 14, lineHeight: 20 },
+  bodyMd:     { fontFamily: 'Inter_500Medium', fontSize: 16, lineHeight: 24 },
 } as const;
 
 export type ThemeColor = keyof typeof Colors.light & keyof typeof Colors.dark;
