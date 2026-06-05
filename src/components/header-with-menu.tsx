@@ -6,6 +6,8 @@ import { ParkSelection } from '@/contexts/ParkContext';
 const PARK_OPTIONS = [
   { value: 'disney' as const, label: 'Walt Disney World' },
   { value: 'universal' as const, label: 'Universal Orlando Resort' },
+  { value: 'seaworld' as const, label: 'SeaWorld Orlando' },
+  { value: 'legoland' as const, label: 'LEGOLAND Florida' },
 ];
 
 interface HeaderWithMenuProps {

@@ -1,7 +1,9 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import React, { createContext, useContext, useEffect, useState } from 'react';
 
-export type ParkSelection = 'disney' | 'universal';
+export type ParkSelection = 'disney' | 'universal' | 'seaworld' | 'legoland';
+
+const PARK_SELECTIONS: ParkSelection[] = ['disney', 'universal', 'seaworld', 'legoland'];
 
 interface ParkContextType {
   selectedPark: ParkSelection;
@@ -29,7 +31,7 @@ export function ParkProvider({ children }: { children: React.ReactNode }) {
   const loadSavedPark = async () => {
     try {
       const saved = await AsyncStorage.getItem(STORAGE_KEY);
-      if (saved === 'disney' || saved === 'universal') {
+      if (saved && PARK_SELECTIONS.includes(saved as ParkSelection)) {
         setSelectedPark(saved as ParkSelection);
       }
     } catch {
