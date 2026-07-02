@@ -23,7 +23,7 @@ export function useGetParkTimes({
     useCallback(() => {
       setIsFocused(true);
       return () => setIsFocused(false);
-    }, [])
+    }, []),
   );
 
   const { data: destinations } = useQuery<DestinationDto[], Error>({
@@ -34,7 +34,7 @@ export function useGetParkTimes({
 
   const destination = destinations?.find((d) => d.slug === destinationSlug);
   const parkId = destination?.parks.find((p) =>
-    p.name.toLowerCase().includes(parkName.toLowerCase())
+    p.name.toLowerCase().includes(parkName.toLowerCase()),
   )?.id;
 
   return useQuery<LiveDto, Error>({

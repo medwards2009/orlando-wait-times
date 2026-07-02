@@ -10,10 +10,8 @@ import { useEffect } from 'react';
 import { useColorScheme } from 'react-native';
 import { PaperProvider } from 'react-native-paper';
 
-import HeaderWithMenu from '@/components/header-with-menu';
 import { PaperDarkTheme, PaperLightTheme } from '@/constants/paperTheme';
 import { FavoritesProvider } from '@/contexts/FavoritesContext';
-import ParkProvider, { useParkSelection } from '@/contexts/ParkContext';
 
 SplashScreen.preventAutoHideAsync();
 
@@ -28,24 +26,11 @@ const queryClient = new QueryClient({
 
 function RootLayoutContent() {
   const colorScheme = useColorScheme();
-  const { selectedPark, setSelectedPark } = useParkSelection();
 
   return (
     <QueryClientProvider client={queryClient}>
       <PaperProvider theme={colorScheme === 'dark' ? PaperDarkTheme : PaperLightTheme}>
-        <Stack
-          screenOptions={{
-            header: () => (
-              <HeaderWithMenu
-                title="Orlando Wait Times"
-                parkSelection={selectedPark}
-                onParkSelectionChange={setSelectedPark}
-              />
-            ),
-          }}
-        >
-          <Stack.Screen name="(tabs)" />
-        </Stack>
+        <Stack screenOptions={{ headerShown: false }} />
       </PaperProvider>
     </QueryClientProvider>
   );
@@ -64,10 +49,8 @@ export default function RootLayout() {
   if (!manropeLoaded || !interLoaded) return null;
 
   return (
-    <ParkProvider>
-      <FavoritesProvider>
-        <RootLayoutContent />
-      </FavoritesProvider>
-    </ParkProvider>
+    <FavoritesProvider>
+      <RootLayoutContent />
+    </FavoritesProvider>
   );
 }

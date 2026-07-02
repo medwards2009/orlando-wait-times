@@ -20,7 +20,9 @@ function loadFromStorage(): Set<string> {
     if (typeof raw === 'string') {
       return new Set(JSON.parse(raw) as string[]);
     }
-  } catch {}
+  } catch {
+    // Ignore malformed/unavailable storage and fall back to an empty set.
+  }
   return new Set();
 }
 
@@ -28,7 +30,9 @@ function saveToStorage(ids: Set<string>) {
   if (Platform.OS !== 'ios') return;
   try {
     Settings.set({ [STORAGE_KEY]: JSON.stringify([...ids]) });
-  } catch {}
+  } catch {
+    // Best-effort persistence; ignore write failures.
+  }
 }
 
 export function FavoritesProvider({ children }: { children: React.ReactNode }) {

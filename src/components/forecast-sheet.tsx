@@ -30,7 +30,12 @@ interface ForecastSheetProps {
   onDismiss: () => void;
 }
 
-export function ForecastSheet({ visible, attractionName, forecast, onDismiss }: ForecastSheetProps) {
+export function ForecastSheet({
+  visible,
+  attractionName,
+  forecast,
+  onDismiss,
+}: ForecastSheetProps) {
   const theme = useTheme();
   const insets = useSafeAreaInsets();
 
