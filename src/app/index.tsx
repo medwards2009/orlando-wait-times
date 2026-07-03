@@ -1,23 +1,11 @@
 import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons';
-import { Href, useRouter } from 'expo-router';
-import { Pressable, ScrollView, StyleSheet } from 'react-native';
+import { useRouter } from 'expo-router';
+import { Pressable, ScrollView, StyleSheet, View } from 'react-native';
 import { Text, useTheme } from 'react-native-paper';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 import { MaxContentWidth, Spacing, Typography } from '@/constants/theme';
-
-type IconName = keyof typeof MaterialCommunityIcons.glyphMap;
-
-const PARKS: { label: string; href: Href; icon: IconName }[] = [
-  { label: 'Walt Disney World', href: '/(disney)/(tabs)/magic-kingdom', icon: 'castle' },
-  {
-    label: 'Universal Orlando Resort',
-    href: '/(universal)/(tabs)/islands-of-adventure',
-    icon: 'movie-star',
-  },
-  { label: 'SeaWorld Orlando', href: '/(seaworld)/(tabs)/seaworld-orlando', icon: 'waves' },
-  { label: 'LEGOLAND Florida', href: '/(legoland)', icon: 'toy-brick' },
-];
+import { RESORT_LIST } from '@/constants/resortThemes';
 
 export default function ParkPickerScreen() {
   const router = useRouter();
@@ -33,32 +21,29 @@ export default function ParkPickerScreen() {
           Choose a park
         </Text>
 
-        {PARKS.map((park) => (
+        {RESORT_LIST.map((resort) => (
           <Pressable
-            key={park.label}
-            onPress={() => router.push(park.href)}
+            key={resort.key}
+            onPress={() => router.push(resort.href)}
             style={({ pressed }) => [
               styles.card,
-              {
-                backgroundColor: theme.colors.elevation.level1,
-                opacity: pressed ? 0.7 : 1,
-              },
+              { backgroundColor: resort.tint, opacity: pressed ? 0.75 : 1 },
             ]}
             accessibilityRole="button"
-            accessibilityLabel={park.label}
+            accessibilityLabel={resort.name}
           >
-            <MaterialCommunityIcons
-              name={park.icon}
-              size={28}
-              color={theme.colors.primary}
-              style={styles.cardIcon}
-            />
-            <Text style={[styles.cardLabel, { color: theme.colors.onSurface }]}>{park.label}</Text>
-            <MaterialCommunityIcons
-              name="chevron-right"
-              size={24}
-              color={theme.colors.onSurfaceVariant}
-            />
+            <View style={[styles.avatar, { backgroundColor: resort.accent }]}>
+              <Text style={styles.mono}>{resort.mono}</Text>
+            </View>
+            <View style={styles.cardText}>
+              <Text style={[styles.cardLabel, { color: theme.colors.onSurface }]}>
+                {resort.name}
+              </Text>
+              <Text style={[styles.cardSub, { color: theme.colors.onSurfaceVariant }]}>
+                {resort.sub}
+              </Text>
+            </View>
+            <MaterialCommunityIcons name="chevron-right" size={26} color={resort.accent} />
           </Pressable>
         ))}
       </ScrollView>
@@ -72,31 +57,51 @@ const styles = StyleSheet.create({
   },
   content: {
     padding: Spacing.four,
-    gap: Spacing.three,
+    gap: Spacing.two,
     width: '100%',
     maxWidth: MaxContentWidth,
     alignSelf: 'center',
   },
   heading: {
-    ...Typography.headlineLg,
+    ...Typography.displayLg,
     marginTop: Spacing.four,
   },
   subheading: {
     ...Typography.labelMd,
-    marginBottom: Spacing.two,
+    fontSize: 15,
+    marginBottom: Spacing.three,
   },
   card: {
     flexDirection: 'row',
     alignItems: 'center',
-    borderRadius: 16,
-    paddingVertical: Spacing.four,
-    paddingHorizontal: Spacing.three,
+    gap: 14,
+    borderRadius: 22,
+    paddingVertical: 16,
+    paddingHorizontal: 18,
   },
-  cardIcon: {
-    marginRight: Spacing.three,
+  avatar: {
+    width: 48,
+    height: 48,
+    borderRadius: 24,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  mono: {
+    fontFamily: 'Fredoka_700Bold',
+    fontSize: 20,
+    color: '#ffffff',
+  },
+  cardText: {
+    flex: 1,
+    minWidth: 0,
   },
   cardLabel: {
-    ...Typography.bodyMd,
-    flex: 1,
+    fontFamily: 'Fredoka_600SemiBold',
+    fontSize: 17,
+  },
+  cardSub: {
+    ...Typography.labelMd,
+    fontSize: 12.5,
+    marginTop: 2,
   },
 });

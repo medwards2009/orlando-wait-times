@@ -1,8 +1,9 @@
-import { Typography } from '@/constants/theme';
+import { useResortTheme } from '@/contexts/ResortThemeContext';
+import { waitLevel } from '@/constants/resortThemes';
 import { ForecastItemDto, QueueDto } from '@/types/api';
 import { useState } from 'react';
-import { StyleSheet, View } from 'react-native';
-import { Card, IconButton, Text, useTheme } from 'react-native-paper';
+import { Pressable, StyleSheet, View } from 'react-native';
+import { IconButton, Text, useTheme } from 'react-native-paper';
 import { ForecastSheet } from './forecast-sheet';
 
 interface TimeCardProps {
@@ -25,6 +26,7 @@ export function TimeCard({
   onFavoriteToggle,
 }: TimeCardProps) {
   const theme = useTheme();
+  const { variant, theme: resort } = useResortTheme();
   const [isPressed, setIsPressed] = useState(false);
   const [showForecast, setShowForecast] = useState(false);
 
@@ -41,26 +43,26 @@ export function TimeCard({
     else operatingLabel = 'Open';
   }
 
-  let borderColor = theme.colors.onSurfaceVariant;
-  if (isOperating) {
-    if (hasStandbyTime) {
-      if (waitTime! < 20) borderColor = '#22c55e';
-      else if (waitTime! < 45) borderColor = '#f59e0b';
-      else borderColor = '#ef4444';
-    } else {
-      borderColor = '#22c55e';
-    }
+  // Single-hue badge: standby time picks a level; open states use the low shade;
+  // closed uses the neutral shade.
+  let badge = variant.closed;
+  let badgeText = 'Closed';
+  if (hasStandbyTime) {
+    badge = variant.wait[waitLevel(waitTime!)];
+    badgeText = `${waitTime} MIN`;
+  } else if (operatingLabel) {
+    badge = variant.wait[0];
+    badgeText = operatingLabel;
   }
 
   return (
     <>
-      <Card
+      <Pressable
         style={[
           styles.card,
           {
-            backgroundColor: theme.colors.surface,
-            borderColor: 'rgba(255,255,255,0.1)',
-            borderLeftColor: borderColor,
+            backgroundColor: variant.cardBg,
+            shadowColor: variant.cardShadow,
           },
           isPressed && styles.cardPressed,
         ]}
@@ -69,36 +71,25 @@ export function TimeCard({
         onPress={hasForecast ? () => setShowForecast(true) : undefined}
       >
         <View style={styles.content}>
-          <View style={styles.textContainer}>
-            <Text style={[styles.rideName, { color: theme.colors.onSurface }]} numberOfLines={2}>
-              {name}
-            </Text>
-          </View>
+          <Text style={[styles.rideName, { color: theme.colors.onSurface }]} numberOfLines={2}>
+            {name}
+          </Text>
 
-          <View style={styles.waitTimeContainer}>
-            <Text
-              style={[
-                hasStandbyTime ? styles.waitTime : styles.closedText,
-                { color: isOperating ? theme.colors.onSurface : theme.colors.onSurfaceVariant },
-              ]}
-            >
-              {hasStandbyTime ? `${waitTime}` : (operatingLabel ?? 'Closed')}
-            </Text>
-            <Text style={[styles.minutesLabel, { color: theme.colors.onSurfaceVariant }]}>
-              {hasStandbyTime ? 'MIN' : ''}
-            </Text>
+          <View style={[styles.badge, { backgroundColor: badge.bg }]}>
+            <Text style={[styles.badgeText, { color: badge.fg }]}>{badgeText.toUpperCase()}</Text>
           </View>
 
           {onFavoriteToggle && (
             <IconButton
               icon={isFavorited ? 'star' : 'star-outline'}
-              size={24}
+              size={20}
+              iconColor={isFavorited ? resort.accent : variant.subtitle}
               onPress={() => onFavoriteToggle(id)}
               style={styles.favoriteButton}
             />
           )}
         </View>
-      </Card>
+      </Pressable>
 
       {hasForecast && (
         <ForecastSheet
@@ -114,12 +105,14 @@ export function TimeCard({
 
 const styles = StyleSheet.create({
   card: {
-    marginBottom: 16,
-    paddingVertical: 12,
+    marginBottom: 10,
+    paddingVertical: 14,
     paddingHorizontal: 16,
-    borderRadius: 24,
-    borderWidth: 1,
-    borderLeftWidth: 4,
+    borderRadius: 18,
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 1,
+    shadowRadius: 14,
+    elevation: 2,
   },
   cardPressed: {
     opacity: 0.7,
@@ -127,30 +120,26 @@ const styles = StyleSheet.create({
   content: {
     flexDirection: 'row',
     alignItems: 'center',
-    justifyContent: 'space-between',
-  },
-  textContainer: {
-    flex: 1,
-    marginRight: 12,
+    gap: 10,
   },
   rideName: {
-    ...Typography.bodyMd,
+    flex: 1,
+    fontFamily: 'Inter_600SemiBold',
+    fontSize: 15.5,
   },
-  waitTimeContainer: {
-    alignItems: 'center',
-    minWidth: 50,
+  badge: {
+    borderRadius: 10,
+    paddingVertical: 6,
+    paddingHorizontal: 10,
   },
-  waitTime: {
-    ...Typography.headlineLg,
-  },
-  closedText: {
-    ...Typography.labelMd,
-  },
-  minutesLabel: {
-    ...Typography.labelSm,
+  badgeText: {
+    fontFamily: 'Inter_600SemiBold',
+    fontSize: 13,
+    letterSpacing: 0.3,
   },
   favoriteButton: {
     margin: 0,
+    marginRight: -8,
   },
 });
 

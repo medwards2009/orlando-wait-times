@@ -9,13 +9,14 @@ export const PaperLightTheme = {
   ...MD3LightTheme,
   colors: {
     ...MD3LightTheme.colors,
-    primary: '#2563eb', // Blue
-    secondary: '#f59e0b', // Amber
-    tertiary: '#10b981', // Emerald
+    primary: '#7C6AE8', // Vivid Resort Worlds default accent (purple)
+    secondary: '#0EA5A0', // Teal
+    tertiary: '#FF7A45', // Orange
     background: Colors.light.background,
+    onBackground: Colors.light.text,
     error: '#ef4444',
     errorContainer: '#fecaca',
-    surface: Colors.light.backgroundElement,
+    surface: '#ffffff',
     surfaceVariant: Colors.light.backgroundSelected,
     onSurface: Colors.light.text,
     onSurfaceVariant: Colors.light.textSecondary,
@@ -26,10 +27,11 @@ export const PaperDarkTheme = {
   ...MD3DarkTheme,
   colors: {
     ...MD3DarkTheme.colors,
-    primary: '#98cbff',
-    secondary: '#a8c9f3',
-    tertiary: '#68d3ff',
+    primary: '#9E90F5',
+    secondary: '#5FD6D0',
+    tertiary: '#FFA579',
     background: Colors.dark.background,
+    onBackground: Colors.dark.text,
     error: '#f87171',
     errorContainer: '#7f1d1d',
     surface: Colors.dark.backgroundElement,

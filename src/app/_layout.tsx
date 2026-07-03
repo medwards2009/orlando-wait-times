@@ -1,9 +1,14 @@
 import {
+  Fredoka_500Medium,
+  Fredoka_600SemiBold,
+  Fredoka_700Bold,
+  useFonts as useFredokaFonts,
+} from '@expo-google-fonts/fredoka';
+import {
   Inter_500Medium,
   Inter_600SemiBold,
   useFonts as useInterFonts,
 } from '@expo-google-fonts/inter';
-import { Manrope_700Bold, useFonts as useManropeFonts } from '@expo-google-fonts/manrope';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { SplashScreen, Stack } from 'expo-router';
 import { useEffect } from 'react';
@@ -37,16 +42,20 @@ function RootLayoutContent() {
 }
 
 export default function RootLayout() {
-  const [manropeLoaded] = useManropeFonts({ Manrope_700Bold });
+  const [fredokaLoaded] = useFredokaFonts({
+    Fredoka_500Medium,
+    Fredoka_600SemiBold,
+    Fredoka_700Bold,
+  });
   const [interLoaded] = useInterFonts({ Inter_500Medium, Inter_600SemiBold });
 
   useEffect(() => {
-    if (manropeLoaded && interLoaded) {
+    if (fredokaLoaded && interLoaded) {
       SplashScreen.hideAsync();
     }
-  }, [manropeLoaded, interLoaded]);
+  }, [fredokaLoaded, interLoaded]);
 
-  if (!manropeLoaded || !interLoaded) return null;
+  if (!fredokaLoaded || !interLoaded) return null;
 
   return (
     <FavoritesProvider>

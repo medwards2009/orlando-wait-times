@@ -1,8 +1,9 @@
 import { Typography } from '@/constants/theme';
+import { useResortTheme } from '@/contexts/ResortThemeContext';
 import { LiveDataItemDto } from '@/types/api';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { FlatList, ListRenderItem, RefreshControl, StyleSheet, View } from 'react-native';
-import { ActivityIndicator, Text, useTheme } from 'react-native-paper';
+import { ActivityIndicator, Text } from 'react-native-paper';
 import TimeCard from './time-card';
 
 interface TimesListProps {
@@ -26,7 +27,7 @@ export function TimesList({
   onFavoriteToggle,
   favoritedIds = new Set(),
 }: TimesListProps) {
-  const theme = useTheme();
+  const { variant } = useResortTheme();
   const [refreshing, setRefreshing] = useState(false);
 
   const handleRefresh = useCallback(() => {
@@ -70,11 +71,11 @@ export function TimesList({
     if (item.type === 'section') {
       return (
         <View style={styles.sectionHeader}>
-          <Text style={[styles.sectionLabel, { color: theme.colors.onSurfaceVariant }]}>
+          <Text style={[styles.sectionLabel, { color: variant.sectionLabel }]}>
             {item.label.toUpperCase()}
           </Text>
           {item.count != null && (
-            <Text style={[styles.sectionCount, { color: theme.colors.onSurfaceVariant }]}>
+            <Text style={[styles.sectionCount, { color: variant.subtitle }]}>
               {item.count} ATTRACTIONS
             </Text>
           )}
@@ -96,19 +97,17 @@ export function TimesList({
 
   if (isFetching && attractions.length === 0) {
     return (
-      <View style={[styles.loadingContainer, { backgroundColor: theme.colors.background }]}>
-        <ActivityIndicator size="large" />
-        <Text style={[styles.loadingText, { color: theme.colors.onSurfaceVariant }]}>
-          Loading wait times…
-        </Text>
+      <View style={[styles.loadingContainer, { backgroundColor: variant.screenBg }]}>
+        <ActivityIndicator size="large" color={variant.forecastBar} />
+        <Text style={[styles.loadingText, { color: variant.subtitle }]}>Loading wait times…</Text>
       </View>
     );
   }
 
   if (!isFetching && attractions.length === 0) {
     return (
-      <View style={styles.emptyContainer}>
-        <Text style={[styles.emptyText, { color: theme.colors.onSurfaceVariant }]}>
+      <View style={[styles.emptyContainer, { backgroundColor: variant.screenBg }]}>
+        <Text style={[styles.emptyText, { color: variant.subtitle }]}>
           No attractions available
         </Text>
       </View>
@@ -126,7 +125,7 @@ export function TimesList({
         <RefreshControl
           refreshing={refreshing}
           onRefresh={handleRefresh}
-          tintColor={theme.colors.primary}
+          tintColor={variant.forecastBar}
         />
       }
     />

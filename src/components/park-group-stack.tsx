@@ -1,7 +1,9 @@
 import Ionicons from '@expo/vector-icons/Ionicons';
 import { Stack, useRouter } from 'expo-router';
-import { Pressable, StyleSheet } from 'react-native';
-import { useTheme } from 'react-native-paper';
+import { Pressable, StyleSheet, Text, View } from 'react-native';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
+
+import { useResortTheme } from '@/contexts/ResortThemeContext';
 
 interface ParkGroupStackProps {
   title: string;
@@ -14,30 +16,51 @@ interface ParkGroupStackProps {
 }
 
 /**
- * Stack layout shared by every park group. Renders the group's child screen
- * with a header whose left arrow pops back to the park picker (`index`).
+ * Custom header for a park group. Fully replaces the native stack header so the
+ * only back affordance is our styled chip — this avoids the native back button
+ * (surfaced from the parent stack) rendering underneath it.
+ */
+function ParkGroupHeader({ title }: { title: string }) {
+  const router = useRouter();
+  const insets = useSafeAreaInsets();
+  const { theme, variant } = useResortTheme();
+
+  return (
+    <View style={{ backgroundColor: variant.screenBg, paddingTop: insets.top }}>
+      <View style={styles.row}>
+        <Pressable
+          onPress={() => router.back()}
+          hitSlop={12}
+          accessibilityRole="button"
+          accessibilityLabel="Back to park picker"
+        >
+          <View style={[styles.backChip, { backgroundColor: variant.backChip }]}>
+            <Ionicons name="chevron-back" size={20} color={theme.accent} />
+          </View>
+        </Pressable>
+
+        <Text style={[styles.title, { color: variant.title }]} numberOfLines={1}>
+          {title}
+        </Text>
+
+        {/* Spacer matching the chip width so the title stays centered. */}
+        <View style={styles.backChip} />
+      </View>
+    </View>
+  );
+}
+
+/**
+ * Stack layout shared by every park group. Washes the header in the active
+ * resort's color and renders a single styled back arrow that pops to the picker.
  */
 export default function ParkGroupStack({ title, screenName = '(tabs)' }: ParkGroupStackProps) {
-  const router = useRouter();
-  const theme = useTheme();
-
   return (
     <Stack>
       <Stack.Screen
         name={screenName}
         options={{
-          title,
-          headerLeft: () => (
-            <Pressable
-              onPress={() => router.back()}
-              hitSlop={12}
-              style={styles.backButton}
-              accessibilityRole="button"
-              accessibilityLabel="Back to park picker"
-            >
-              <Ionicons name="chevron-back" size={26} color={theme.colors.onSurface} />
-            </Pressable>
-          ),
+          header: () => <ParkGroupHeader title={title} />,
         }}
       />
     </Stack>
@@ -45,8 +68,25 @@ export default function ParkGroupStack({ title, screenName = '(tabs)' }: ParkGro
 }
 
 const styles = StyleSheet.create({
-  backButton: {
-    paddingHorizontal: 8,
-    paddingVertical: 4,
+  row: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    height: 52,
+    paddingHorizontal: 12,
+  },
+  backChip: {
+    width: 34,
+    height: 34,
+    borderRadius: 17,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  title: {
+    flex: 1,
+    textAlign: 'center',
+    fontFamily: 'Fredoka_700Bold',
+    fontSize: 18,
+    marginHorizontal: 8,
   },
 });
