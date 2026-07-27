@@ -1,10 +1,11 @@
 import TimesList from '@/components/times-list';
+import { useResortTheme } from '@/contexts/ResortThemeContext';
 import { useFavorites } from '@/contexts/FavoritesContext';
 import { useGetParkTimes } from '@/hooks/useGetParkTimes';
 import { LiveDataItemDto } from '@/types/api';
 import { useMemo } from 'react';
 import { StyleSheet, View } from 'react-native';
-import { Text, useTheme } from 'react-native-paper';
+import { Text } from 'react-native-paper';
 
 interface ParkScreenProps {
   destinationSlug: string;
@@ -12,7 +13,7 @@ interface ParkScreenProps {
 }
 
 export function ParkScreen({ destinationSlug, parkName }: ParkScreenProps) {
-  const theme = useTheme();
+  const { variant } = useResortTheme();
   const { favoritedIds, toggleFavorite } = useFavorites();
 
   const { data, isFetching, error, refetch } = useGetParkTimes({
@@ -28,8 +29,8 @@ export function ParkScreen({ destinationSlug, parkName }: ParkScreenProps) {
 
   if (error) {
     return (
-      <View style={[styles.container, { backgroundColor: theme.colors.background }]}>
-        <Text style={[styles.errorText, { color: theme.colors.error }]}>
+      <View style={[styles.container, { backgroundColor: variant.screenBg }]}>
+        <Text style={[styles.errorText, { color: '#ef4444' }]}>
           Error loading wait times: {error.message}
         </Text>
       </View>
@@ -37,7 +38,7 @@ export function ParkScreen({ destinationSlug, parkName }: ParkScreenProps) {
   }
 
   return (
-    <View style={[styles.container, { backgroundColor: theme.colors.background }]}>
+    <View style={[styles.container, { backgroundColor: variant.screenBg }]}>
       <TimesList
         attractions={attractions}
         parkName={parkName}
